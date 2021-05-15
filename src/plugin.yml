@@ -1,0 +1,8 @@
+name: ChatCooldown
+author: AhmHkn
+main: me.AhmHkn.ChatCooldown.Main
+description: Chat cooldown plugin.
+version: 1.0
+commands:
+  cdreload:
+    description: Reload command.

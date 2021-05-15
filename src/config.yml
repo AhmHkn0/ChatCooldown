@@ -1,0 +1,5 @@
+Cooldown: 2 #Second
+Prefix: "&9ChatCooldown &8&l» "
+Message: "&cCalm down!"
+
+#Bypass permission is "chatcooldown.bypass"
