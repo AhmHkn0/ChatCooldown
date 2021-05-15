@@ -1,7 +1,6 @@
 package me.AhmHkn.ChatCooldown;
 
 import java.util.ArrayList;
-
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -25,7 +24,7 @@ public class Main extends JavaPlugin implements Listener {
     }
 
     @EventHandler
-    public void onChat(AsyncPlayerChatEvent e) {
+    public void onPlayerChat(AsyncPlayerChatEvent e) {
         final Player p = e.getPlayer();
         if (p.hasPermission("chatcooldown.bypass"))
             return;
@@ -34,7 +33,7 @@ public class Main extends JavaPlugin implements Listener {
             e.setCancelled(true);
         } else {
             plugin.cooldownlist.add(p.getName());
-            e.getPlayer().getServer().getScheduler().scheduleSyncDelayedTask(this, new Runnable() {
+            e.getPlayer().getServer().getScheduler().scheduleAsyncDelayedTask(this, new Runnable() {
 
                 public void run() {
                     if (Main.plugin.cooldownlist.contains(p.getName()))
@@ -53,12 +52,12 @@ public class Main extends JavaPlugin implements Listener {
             if (sender instanceof Player) {
                 Player p = (Player) sender;
                 {
-                   if (p.getPlayer().isOp()) {
-                       Main.plugin.reloadConfig();
-                       sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("Prefix")) + "§aReloaded Config!");
-                }else{
-                       sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("Prefix")) + "§cYou don't have permission!");
-                   }
+                    if (p.getPlayer().isOp()) {
+                        Main.plugin.reloadConfig();
+                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("Prefix")) + "§aReloaded Config!");
+                    }else{
+                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("Prefix")) + "§cYou don't have permission!");
+                    }
                 }
             }else{
                 Main.plugin.reloadConfig();
@@ -67,4 +66,6 @@ public class Main extends JavaPlugin implements Listener {
         }
         return false;
     }
+
+
 }

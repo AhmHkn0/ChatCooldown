@@ -2,7 +2,7 @@ name: ChatCooldown
 author: AhmHkn
 main: me.AhmHkn.ChatCooldown.Main
 description: Chat cooldown plugin.
-version: 1.1
+version: 1.2
 commands:
   cdreload:
     description: Reload command.
