@@ -27,16 +27,17 @@ public class Main extends JavaPlugin implements Listener {
     @EventHandler
     public void onChat(AsyncPlayerChatEvent e) {
         final Player p = e.getPlayer();
-        if (p.isOp() || p.hasPermission("chatcooldown.bypass"))
+        if (p.hasPermission("chatcooldown.bypass"))
             return;
         if (plugin.cooldownlist.contains(p.getName())) {
             msg(p, "Message");
             e.setCancelled(true);
         } else {
             plugin.cooldownlist.add(p.getName());
-            getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+            e.getPlayer().getServer().getScheduler().scheduleSyncDelayedTask(this, new Runnable() {
+
                 public void run() {
-                    if (Main.plugin.cooldownlist.contains(p.getPlayer().getName()))
+                    if (Main.plugin.cooldownlist.contains(p.getName()))
                         Main.plugin.cooldownlist.remove(p.getName());
                 }
             }, (20L * plugin.Cooldown));
