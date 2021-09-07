@@ -1,6 +1,9 @@
 package me.AhmHkn.ChatCooldown;
 
-import java.util.ArrayList;
+import java.util.HashSet;
+
+import me.AhmHkn.ChatCooldown.bStats.Metrics;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -11,37 +14,38 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Main extends JavaPlugin implements Listener {
-    ArrayList<String> cooldownlist = new ArrayList<>();
+    public static HashSet<Player> cooldownlist;
     public static Main plugin;
+    public static Integer cooldown;
+    public static Metrics metrics;
 
-    int Cooldown;
 
     public void onEnable() {
+        saveDefaultConfig();
         plugin = this;
-        this.saveDefaultConfig();
-        this.Cooldown = getConfig().getInt("Cooldown");
+        cooldown = getConfig().getInt("Cooldown");
+        cooldownlist = new HashSet<>();
         getServer().getPluginManager().registerEvents(plugin, plugin);
+        int pluginID = 12728;
+        metrics = new Metrics(plugin, pluginID);
     }
 
     @EventHandler
     public void onPlayerChat(AsyncPlayerChatEvent e) {
-        final Player p = e.getPlayer();
+        Player p = e.getPlayer();
         if (p.hasPermission("chatcooldown.bypass"))
             return;
-        if (plugin.cooldownlist.contains(p.getName())) {
+        if (cooldownlist.contains(p)) {
             msg(p, "Message");
             e.setCancelled(true);
         } else {
-            plugin.cooldownlist.add(p.getName());
-            e.getPlayer().getServer().getScheduler().scheduleAsyncDelayedTask(this, new Runnable() {
-
-                public void run() {
-                    if (Main.plugin.cooldownlist.contains(p.getName()))
-                        Main.plugin.cooldownlist.remove(p.getName());
-                }
-            }, (20L * plugin.Cooldown));
+            cooldownlist.add(p);
+            Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+                cooldownlist.remove(p);
+            }, 10L * cooldown);
         }
     }
+
 
     public static void msg(Player p, String cfg) {
         p.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("Prefix")) + ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString(cfg)));
