@@ -24,6 +24,7 @@ public class Main extends JavaPlugin implements Listener {
         getServer().getPluginManager().registerEvents(new Event(), plugin);
         int pluginID = 12728;
         metrics = new Metrics(plugin, pluginID);
+        getCommand("cdreload").setExecutor(new Command());
     }
 
 
