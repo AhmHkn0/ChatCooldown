@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import static me.AhmHkn.ChatCooldown.Main.*;
 
-public class Command implements Listener {
+public class Command implements Listener, CommandExecutor {
 
     public boolean onCommand(CommandSender sender, org.bukkit.command.Command cmd, String s, String[] args) {
         if (s.equalsIgnoreCase("cdreload")) {
